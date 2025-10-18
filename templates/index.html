@@ -33,13 +33,38 @@
       text-shadow:0 0 10px #00ccff;
     }
     nav { margin-top:8px; }
-    nav a { color:#ccf; margin:0 12px; text-decoration:none; font-weight:bold; position:relative; transition:.3s; }
-    nav a::after { content:""; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:#ff0; transition:.3s; }
+    nav a {
+      color:#ccf;
+      margin:0 12px;
+      text-decoration:none;
+      font-weight:bold;
+      position:relative;
+      transition:.3s;
+    }
+    nav a::after {
+      content:"";
+      position:absolute;
+      bottom:-4px; left:0;
+      width:0; height:2px;
+      background:#ff0;
+      transition:.3s;
+    }
     nav a:hover::after { width:100%; }
     nav a.active { color:#ff0; }
 
-    section { padding:60px 20px; animation:fadeInUp 1s; scroll-margin-top:100px; }
-    section h2 { text-align:center; margin-bottom:25px; font-size:28px; color:#66d9ff; text-shadow:0 0 12px #0099ff; animation:glow 2s infinite alternate; }
+    section {
+      padding:60px 20px;
+      animation:fadeInUp 1s;
+      scroll-margin-top:100px;
+    }
+    section h2 {
+      text-align:center;
+      margin-bottom:25px;
+      font-size:28px;
+      color:#66d9ff;
+      text-shadow:0 0 12px #0099ff;
+      animation:glow 2s infinite alternate;
+    }
 
     .card {
       background:rgba(255,255,255,.05);
@@ -51,7 +76,10 @@
       transition:.4s;
       animation:fadeInUp 1s;
     }
-    .card:hover { transform:translateY(-8px) scale(1.02); box-shadow:0 12px 30px rgba(0,0,0,.7); }
+    .card:hover {
+      transform:translateY(-8px) scale(1.02);
+      box-shadow:0 12px 30px rgba(0,0,0,.7);
+    }
 
     .btn {
       display:inline-block;
@@ -89,26 +117,21 @@
     }
 
     /* === ANIMATIONS === */
-    @keyframes yellowPop {
-      0% { transform: scale(0.8); opacity: 0; box-shadow: 0 0 0 yellow; }
-      50% { transform: scale(1.08); opacity: 1; box-shadow: 0 0 25px 10px yellow; }
-      100% { transform: scale(1); opacity: 1; box-shadow: 0 0 15px 3px yellow; }
-    }
-    .pop-yellow { animation: yellowPop 1s ease forwards; }
+    @keyframes fadeInUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:none; } }
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+    @keyframes slideDown { from { transform:translateY(-60px); } to { transform:translateY(0); } }
+    @keyframes glow { from { text-shadow:0 0 8px #00c6ff; } to { text-shadow:0 0 18px #0072ff; } }
 
-    @keyframes bluePop {
-      0% { transform: scale(0.8); opacity: 0; box-shadow: 0 0 0 #33ccff; }
-      50% { transform: scale(1.08); opacity: 1; box-shadow: 0 0 25px 10px #33ccff; }
-      100% { transform: scale(1); opacity: 1; box-shadow: 0 0 15px 3px #33ccff; }
+    /* Flood Insights expansion */
+    #insightOptions {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.7s ease, opacity 0.6s ease;
     }
-    .pop-blue { animation: bluePop 1s ease forwards; }
-
-    #map {
-      height:400px;
-      width:100%;
-      border-radius:15px;
-      box-shadow:0 0 15px rgba(0,0,0,.6);
-      margin-top:15px;
+    #insightOptions.show {
+      max-height: 300px;
+      opacity: 1;
     }
 
     .hero {
@@ -123,52 +146,97 @@
       flex-direction:column;
       overflow:hidden;
     }
-    .hero::after { content:""; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); }
+    .hero::after {
+      content:"";
+      position:absolute;
+      top:0; left:0;
+      width:100%; height:100%;
+      background:rgba(0,0,0,0.3);
+    }
     .hero-content { position: relative; z-index:1; max-width:90%; }
     .hero-title {
-        font-size:36px;
-        font-weight:bold;
-        background:linear-gradient(90deg,#00c6ff,#66ffff,#0072ff);
-        background-clip:text;
-        -webkit-background-clip:text;
-        color:transparent;
-        -webkit-text-fill-color:transparent;
-        display:inline-block;
-        white-space:nowrap;
-        overflow:hidden;
-        width:0;
-        animation: typing 4s steps(40,end) forwards, glowPulse 2s infinite alternate 4s;
+      font-size:36px;
+      font-weight:bold;
+      background:linear-gradient(90deg,#00c6ff,#66ffff,#0072ff);
+      background-clip:text;
+      -webkit-background-clip:text;
+      color:transparent;
+      -webkit-text-fill-color:transparent;
+      white-space:nowrap;
+      overflow:hidden;
+      width:0;
+      animation: typing 4s steps(40,end) forwards, glowPulse 2s infinite alternate 4s;
     }
-
-
-    .hero-sub { margin-top:12px; font-size:18px; opacity:0; animation: fadeIn 2s ease 4s forwards; }
-
+    .hero-sub {
+      margin-top:12px;
+      font-size:18px;
+      opacity:0;
+      animation: fadeIn 2s ease 4s forwards;
+    }
     @keyframes typing { from { width:0; } to { width:100%; } }
-    @keyframes glowPulse { from { text-shadow:0 0 8px #00c6ff, 0 0 16px #0099ff; } to { text-shadow:0 0 20px #00ffff, 0 0 30px #00c6ff; } }
-    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-    @keyframes fadeInUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:none; } }
-    @keyframes slideDown { from { transform:translateY(-60px); } to { transform:translateY(0); } }
-    @keyframes glow { from { text-shadow:0 0 8px #00c6ff; } to { text-shadow:0 0 18px #0072ff; } }
+    @keyframes glowPulse { from { text-shadow:0 0 8px #00c6ff; } to { text-shadow:0 0 20px #00ffff; } }
+
+    /* === Info Section Styling === */
+.info-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  max-width: 900px;
+}
+
+.info-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.info-image {
+  flex: 1 1 40%;
+  text-align: center;
+}
+
+.info-image img {
+  width: 100%;
+  max-width: 350px;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+}
+
+.info-text {
+  flex: 1 1 55%;
+  text-align: left;
+}
+
+.info-text p {
+  font-size: 16px;
+  margin-bottom: 12px;
+  color: #cce4ff;
+}
+
   </style>
 </head>
 <body>
 
   <header>
-    <h1>Flood Help – Udham Singh Nagar</h1>
+    <h1>GeoSolutions</h1>
     <nav>
       <a href="#alerts">Alerts</a>
       <a href="#whatdo">What To Do</a>
       <a href="#helplines">Helplines</a>
-      <a href="#mapSection">Flood Map</a>
+      <a href="#mapSection">Flood Insights</a>
       <a href="#report">Report</a>
+      <a href="#info">Case Study</a> <!-- New menu item -->
       <a href="#about">About</a>
     </nav>
   </header>
 
   <div class="hero">
     <div class="hero-content">
-      <div class="hero-title">POWERED BY GEO SOLUTIONS</div>
-      <div class="hero-sub">Guidance, inundation map & reporting for local residents</div>
+      <div class="hero-title">Flood Relief & Community Support</div>
+      <div class="hero-sub"><i>An integrated platform providing flood guidance, inundation maps, and predictive reports for proactive community response!</i></div>
     </div>
   </div>
 
@@ -178,7 +246,7 @@
       <div id="weatherContainer" class="weather-box">
         <p><b>Loading weather...</b></p>
       </div>
-      <p><i>Rain forecast data is from Open-Meteo API (Udham Singh Nagar region).</i></p>
+      <p><i>Data is from Open-Meteo API (Udham Singh Nagar region).</i></p>
     </div>
   </section>
 
@@ -211,23 +279,18 @@
     </div>
   </section>
 
+  <!-- Flood Insights -->
   <section id="mapSection">
-    <h2>🗺 Flood Inundation Mapping</h2>
-    <div class="card">
-      <p>This map shows the <b>current estimated flood-prone areas</b> in Udham Singh Nagar.</p>
-      <div id="map"></div>
-    </div>
-
-    <!-- Separate card for Flood Prediction Model -->
-    <div class="card" id="floodPredictionCard" style="text-align:center;">
-      <a href="https://projac1.projects.earthengine.app/view/app" class="btn">Flood Mapping</a>
+    <h2>🌊 Flood Insights</h2>
+    <div id="insightOptions">
+      <div class="card" style="text-align:center;">
+        <a href="https://projac1.projects.earthengine.app/view/app" class="btn">Flood Mapping</a>
+      </div>
+      <div class="card" style="text-align:center;">
+        <a href="floodPrediction.html" class="btn">Flood Prediction</a>
+      </div>
     </div>
   </section>
-
-  <!-- flood mapping code -->
-    <div class="card" id="floodPredictionCard" style="text-align:center;">
-      <a href="floodPrediction.html" class="btn">Flood Prediction</a>
-    </div>
 
   <section id="report">
     <h2>📝 Report Flood</h2>
@@ -243,6 +306,22 @@
     </div>
   </section>
 
+  <!-- Information Section -->
+<section id="info">
+  <h2>🌍 Case Study</h2>
+  <div class="card info-box">
+    <div class="info-content">
+      <div class="info-image">
+        <img src="flood.jpg" alt="Uddham Singh Nagar" width="100" height="200" style="margin-right:90px">
+      </div>
+      <div class="info-text">
+        <p>Gain comprehensive insights into the flood history, patterns, and management strategies in Udham Singh Nagar.</p>
+        <a href="index2.html" class="btn">Know More...</a>
+      </div>
+    </div>
+  </div>
+</section>
+
   <section id="about">
     <h2>About This Site</h2>
     <div class="card">
@@ -255,58 +334,37 @@
     © 2025 Udham Singh Nagar Flood Help • Built for community safety
   </footer>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     // === WEATHER FETCH ===
     async function fetchWeather() {
       const lat = 28.9845, lon = 79.4141;
-      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=precipitation_probability,temperature_2m`;
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=precipitation_probability`;
       try {
         const resp = await fetch(url);
         const data = await resp.json();
-        showWeather(data);
-      } catch (err) {
-        console.error("Weather fetch error:", err);
+        const cur = data.current_weather;
+        const hrly = data.hourly.precipitation_probability;
+        const rainChance = hrly && hrly.length ? hrly[0] : "N/A";
+        const condition = cur.weathercode < 3 ? "Clear" : "Rain likely";
+        const html = `
+          <p><b>Temperature:</b> ${cur.temperature} °C</p>
+          <p><b>Wind speed:</b> ${cur.windspeed} m/s</p>
+          <p><b>Condition:</b> ${condition}</p>
+          <p><b>Rainfall Probability:</b> ${rainChance} %</p>
+        `;
+        document.getElementById("weatherContainer").innerHTML = html;
+      } catch {
         document.getElementById("weatherContainer").innerHTML = "<p>Error loading weather.</p>";
       }
     }
 
-    function showWeather(data) {
-      const cur = data.current_weather;
-      const temp = cur.temperature.toFixed(1);
-      const wind = cur.windspeed;
-      const html = `
-        <p><b>Temperature:</b> ${temp} °C</p>
-        <p><b>Wind speed:</b> ${wind} m/s</p>
-        <p><b>Condition:</b> ${cur.weathercode < 3 ? "Clear" : "Rain likely"}</p>
-      `;
-      const weatherEl = document.getElementById("weatherContainer");
-      weatherEl.innerHTML = html;
-
-      // Animate weather card
-      const weatherCard = document.getElementById("weatherCard");
-      weatherCard.classList.remove("pop-yellow");
-      void weatherCard.offsetWidth;
-      weatherCard.classList.add("pop-yellow");
-
-      // Animate flood prediction button card (blue)
-      const floodCard = document.getElementById("floodPredictionCard");
-      floodCard.classList.remove("pop-blue");
-      void floodCard.offsetWidth;
-      floodCard.classList.add("pop-blue");
-    }
-
-    // === MAP ===
-    const map = L.map('map').setView([28.9845, 79.4141], 10);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution:'© OpenStreetMap contributors' }).addTo(map);
-    L.marker([28.9845, 79.4141]).addTo(map).bindPopup("<b>Udham Singh Nagar</b><br>Demo flood marker.").openPopup();
-
-    // === REPORT ===
+    // === REPORT FUNCTION ===
     function sendReport(ev) {
       ev.preventDefault();
-      let name = document.getElementById("rname").value || "Resident";
-      let loc = document.getElementById("rloc").value || "(unspecified)";
-      document.getElementById("reportMsg").innerText = "✅ Thank you " + name + "! Your report for " + loc + " has been submitted.";
+      const name = document.getElementById("rname").value || "Resident";
+      const loc = document.getElementById("rloc").value || "(unspecified)";
+      document.getElementById("reportMsg").innerText =
+        "✅ Thank you " + name + "! Your report for " + loc + " has been submitted.";
       ev.target.reset();
     }
 
@@ -319,14 +377,24 @@
         const secTop = sec.offsetTop - 120;
         if (window.scrollY >= secTop) current = sec.getAttribute("id");
       });
-      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 2) current = "about";
+      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 2)
+        current = "about";
       navLinks.forEach(link => {
         link.classList.remove("active");
-        if (link.getAttribute("href").includes(current)) link.classList.add("active");
+        if (link.getAttribute("href")?.includes(current)) link.classList.add("active");
       });
+
+      // Auto-show Flood Insights when section visible
+      const insights = document.getElementById("mapSection");
+      const insightBox = document.getElementById("insightOptions");
+      const rect = insights.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 100 && rect.bottom > 100) {
+        insightBox.classList.add("show");
+      }
     });
 
     fetchWeather();
   </script>
 </body>
 </html>
+

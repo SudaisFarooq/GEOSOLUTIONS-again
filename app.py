@@ -12,6 +12,11 @@ def home():
 def flood_prediction_page():
     return render_template('floodPrediction.html')
 
+@app.route('/index2.html')
+def case_study_page():
+    return render_template('index2.html')
+
+
 @app.route('/predict', methods=['POST'])
 def predict_route():
     try:
