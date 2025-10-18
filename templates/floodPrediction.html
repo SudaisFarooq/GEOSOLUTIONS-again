@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Flood Prediction</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family:Arial,Helvetica,sans-serif; background:#001322; color:#eef; text-align:center; margin:0; }
+    h1 { margin-top:20px; color:#00c6ff; }
+    form { background:rgba(255,255,255,0.05); padding:20px; margin:20px auto; max-width:600px; border-radius:15px; }
+    #map { height:300px; width:90%; margin:20px auto; border-radius:10px; }
+    #chartContainer { margin:20px auto; width:90%; max-width:800px; display:none; background:rgba(255,255,255,0.05); padding:20px; border-radius:15px; }
+    input { width:100%; padding:10px; border-radius:8px; border:1px solid #046; background:#012; color:#fff; margin:6px 0; }
+    button { background:#00aaff; border:none; padding:12px 20px; border-radius:10px; color:#fff; cursor:pointer; margin-top:10px; }
+    button:hover { background:#00ccff; }
+  </style>
+</head>
+<body>
+  <h1>Flood Prediction</h1>
+  <form id="predictForm">
+    <label for="dateRange">Select Date Range:</label>
+    <input type="text" id="dateRange" placeholder="Select start and end dates" required>
+
+    <label>Select Your Location:</label>
+    <div id="map"></div>
+    <input type="hidden" id="latitude" required>
+    <input type="hidden" id="longitude" required>
+
+    <button type="submit">Get Prediction</button>
+  </form>
+
+  <div id="chartContainer">
+    <canvas id="predictionChart"></canvas>
+  </div>
+
+  <script>
+    // Flatpickr
+    flatpickr("#dateRange", { mode:"range", dateFormat:"Y-m-d", minDate:"2024-01-01", maxDate:"2025-12-31" });
+
+    // Map
+    const map = L.map('map').setView([28.9845, 79.4141], 8);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution:'© OpenStreetMap' }).addTo(map);
+    let marker = null;
+    map.on('click', e => {
+      const { lat, lng } = e.latlng;
+      if (marker) map.removeLayer(marker);
+      marker = L.marker([lat, lng]).addTo(map);
+      document.getElementById('latitude').value = lat;
+      document.getElementById('longitude').value = lng;
+    });
+
+    // Form submission
+    const form = document.getElementById('predictForm');
+    const chartContainer = document.getElementById('chartContainer');
+    let predictionChart = null;
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const dateRange = document.getElementById('dateRange').value;
+      if (!dateRange) return alert("Select date range");
+      const [startDate, endDate] = dateRange.split(" to ");
+      const latitude = document.getElementById('latitude').value;
+      const longitude = document.getElementById('longitude').value;
+      if (!latitude || !longitude) return alert("Select location on map");
+
+      try {
+        const response = await fetch('/predict', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ startDate, endDate, latitude, longitude })
+        });
+        const data = await response.json();
+        if (data.error) throw new Error(data.error);
+        renderChart(data.prediction.date, data.prediction.percentage);
+      } catch (err) {
+        alert("Error: " + err.message);
+      }
+    });
+
+    function renderChart(dates, percentages) {
+      chartContainer.style.display = "block";
+      if (predictionChart) predictionChart.destroy();
+      const ctx = document.getElementById('predictionChart').getContext('2d');
+      predictionChart = new Chart(ctx, {
+        type:'line',
+        data: { labels: dates, datasets:[{ label:'Flood Probability (%)', data:percentages, borderColor:'#00ccff', backgroundColor:'rgba(0,204,255,0.2)', tension:0.4 }] },
+        options:{ scales:{ x:{ ticks:{ color:'#88d' } }, y:{ ticks:{ color:'#88d' } } }, plugins:{ legend:{ labels:{ color:'#fff' } } } }
+      });
+    }
+  </script>
+</body>
+</html>
